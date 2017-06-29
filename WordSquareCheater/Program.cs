@@ -19,12 +19,54 @@ namespace WordSquareCheater
             return x.score - y.score;
         }
 
-        static void printResults(List<Word> results)
+        static void printResults(List<Word> results, int perLine, int width)
         {
-            foreach (Word w in results)
+            int min = 0;
+            while (results.Count > min)
             {
-                System.Console.WriteLine(w.word + " " + w.score);
-                System.Console.WriteLine(w.input);
+                if (results.Count - min < perLine)
+                {
+                    perLine = results.Count - min;
+                }
+                string words = "";
+                string scores = "";
+                string[] pictures = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    pictures[i] = "";
+                }
+                for (int i = 0; i < perLine; i++)
+                {
+                    words += results[i + min].word;
+                    while (words.Length < width / perLine * (i+1))
+                    {
+                        words += " ";
+                    }
+
+                    scores += results[i + min].score;
+                    while (scores.Length < width / perLine * (i+1))
+                    {
+                        scores += " ";
+                    }
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        pictures[j] += results[i + min].input[j];
+                        while (pictures[j].Length < width / perLine * (i+1))
+                        {
+                            pictures[j] += " ";
+                        }
+                    }
+                }
+                System.Console.WriteLine(words);
+                System.Console.WriteLine(scores);
+                for (int i = 0; i < 4; i++)
+                {
+                    System.Console.WriteLine(pictures[i]);
+                }
+
+                min += perLine;
+                System.Console.WriteLine();
             }
         }
 
@@ -46,7 +88,7 @@ namespace WordSquareCheater
                 Square s = new Square(square.ToUpper(), dict);
                 List<Word> longestWords = s.longestWords();
                 longestWords.Sort(compareScore);
-                printResults(longestWords);
+                printResults(longestWords, 10, 119);
             }
         }
     }
