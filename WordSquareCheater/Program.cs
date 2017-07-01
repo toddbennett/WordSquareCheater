@@ -16,11 +16,24 @@ namespace WordSquareCheater
 
         private static int compareScore(Word x, Word y)
         {
-            return x.score - y.score;
+            return y.score - x.score;
         }
 
         static void printResults(List<Word> results, int perLine, int width)
-        {
+        { 
+            HashSet<string> used = new HashSet<string>();
+            List<Word> results2 = new List<Word>();
+            foreach (Word w in results)
+            {
+                if (used.Contains(w.word))
+                {
+                    continue;
+                }
+                used.Add(w.word);
+                results2.Add(w);
+            }
+            results = results2;
+
             int min = 0;
             while (results.Count > min)
             {
@@ -51,7 +64,7 @@ namespace WordSquareCheater
 
                     for (int j = 0; j < 4; j++)
                     {
-                        pictures[j] += results[i + min].input[j];
+                        pictures[j] += results[i + min].getFormattedInput()[j];
                         while (pictures[j].Length < width / perLine * (i+1))
                         {
                             pictures[j] += " ";
@@ -89,6 +102,37 @@ namespace WordSquareCheater
                 List<Word> longestWords = s.longestWords();
                 longestWords.Sort(compareScore);
                 printResults(longestWords, 10, 119);
+                while (true)
+                {
+                    System.Console.WriteLine("Enter any bonuses: (ex. tl5)");
+                    string updates = System.Console.ReadLine();
+                    if (updates.Length < 3)
+                    {
+                        break;
+                    }
+                    if (updates[0] == 't' && updates[1] == 'l')
+                    {
+                        longestWords = s.updateBonuses(Bonus.tl, int.Parse(updates.Substring(2)), longestWords);
+                    }
+                    else if (updates[0] == 'd' && updates[1] == 'l')
+                    {
+                        longestWords = s.updateBonuses(Bonus.dl, int.Parse(updates.Substring(2)), longestWords);
+                    }
+                    else if (updates[0] == 't' && updates[1] == 'w')
+                    {
+                        longestWords = s.updateBonuses(Bonus.tw, int.Parse(updates.Substring(2)), longestWords);
+                    }
+                    else if (updates[0] == 'd' && updates[1] == 'w')
+                    {
+                        longestWords = s.updateBonuses(Bonus.dw, int.Parse(updates.Substring(2)), longestWords);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    longestWords.Sort(compareScore);
+                    printResults(longestWords, 10, 119);
+                }
             }
         }
     }

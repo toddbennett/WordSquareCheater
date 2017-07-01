@@ -7,15 +7,44 @@ using System.Collections;
 
 namespace WordSquareCheater
 {
+    enum Bonus
+    {
+        none,
+        dl,
+        tl,
+        dw,
+        tw
+    };
+
     class Square
     {
         private string letters;
         private Words dict;
+        private Bonus[] bonuses;
 
         public Square(string inLetters, Words inDict)
         {
             letters = inLetters;
             dict = inDict;
+
+            bonuses = new Bonus[16];
+            for (int i = 0; i < 16; i++)
+            {
+                bonuses[i] = Bonus.none;
+            }
+        }
+
+        public List<Word> updateBonuses(Bonus b, int cell, List<Word> words)
+        {
+            bonuses[cell] = b;
+            for (int i = 0; i < words.Count; i++)
+            {
+                Word w = words[i];
+                w.updateScore(bonuses);
+                words[i] = w;
+
+            }
+            return words;
         }
 
 
@@ -116,11 +145,9 @@ namespace WordSquareCheater
                 int result = dict.query(testWord);
                 if (result == 2)
                 {
-                    if (!winners.Contains(testWord)) {
-                        winners.Add(testWord);
-                        Word w = new Word(testWord, possible);
-                        winWord.Add(w);
-                    }
+                    winners.Add(testWord);
+                    Word w = new Word(testWord, possible);
+                    winWord.Add(w);
                 }
 
                 // try to go deeper
