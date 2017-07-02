@@ -94,14 +94,24 @@ namespace WordSquareCheater
                 dict.add(word.ToUpper());
                 word = d.ReadLine();
             }
+            Bonus[] b = null;
             while (true)
             {
                 System.Console.WriteLine("Enter a 16 letter square!");
                 string square = System.Console.ReadLine();
-                Square s = new Square(square.ToUpper(), dict);
+                Square s;
+                if (b != null)
+                {
+                    s = new Square(square.ToUpper(), dict, b);
+                }
+                else
+                {
+                    s = new Square(square.ToUpper(), dict);
+                }
                 List<Word> longestWords = s.longestWords();
                 longestWords.Sort(compareScore);
                 printResults(longestWords, 10, 119);
+                s.printBonuses();
                 while (true)
                 {
                     System.Console.WriteLine("Enter any bonuses: (ex. tl5)");
@@ -132,7 +142,9 @@ namespace WordSquareCheater
                     }
                     longestWords.Sort(compareScore);
                     printResults(longestWords, 10, 119);
+                    s.printBonuses();
                 }
+                b = s.getBonuses();
             }
         }
     }

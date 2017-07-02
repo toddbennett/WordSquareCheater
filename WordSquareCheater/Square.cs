@@ -22,6 +22,35 @@ namespace WordSquareCheater
         private Words dict;
         private Bonus[] bonuses;
 
+        public void printBonuses()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    switch (bonuses[i*4+j])
+                    {
+                        case Bonus.tl:
+                            System.Console.Write("t");
+                            break;
+                        case Bonus.dl:
+                            System.Console.Write("d");
+                            break;
+                        case Bonus.tw:
+                            System.Console.Write("T");
+                            break;
+                        case Bonus.dw:
+                            System.Console.Write("D");
+                            break;
+                        default:
+                            System.Console.Write(".");
+                            break;
+                    }
+                }
+                System.Console.WriteLine();
+            }
+        }
+
         public Square(string inLetters, Words inDict)
         {
             letters = inLetters;
@@ -32,6 +61,18 @@ namespace WordSquareCheater
             {
                 bonuses[i] = Bonus.none;
             }
+        }
+
+        public Square(string inLetters, Words inDict, Bonus[] inBonuses)
+        {
+            letters = inLetters;
+            dict = inDict;
+            bonuses = inBonuses;
+        }
+
+        public Bonus[] getBonuses()
+        {
+            return bonuses;
         }
 
         public List<Word> updateBonuses(Bonus b, int cell, List<Word> words)
