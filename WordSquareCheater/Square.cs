@@ -88,6 +88,17 @@ namespace WordSquareCheater
             return words;
         }
 
+        public List<Word> updateBonuses(List<Word> words)
+        {
+            for (int i = 0; i < words.Count; i++)
+            {
+                Word w = words[i];
+                w.updateScore(bonuses);
+                words[i] = w;
+            }
+            return words;
+        }
+
 
         // this is useful for navigating the board.
         // returns -1 if no more cells with current parent, need to backtrack

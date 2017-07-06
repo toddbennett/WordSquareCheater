@@ -109,6 +109,7 @@ namespace WordSquareCheater
                     s = new Square(square.ToUpper(), dict);
                 }
                 List<Word> longestWords = s.longestWords();
+                longestWords = s.updateBonuses(longestWords);
                 longestWords.Sort(compareScore);
                 printResults(longestWords, 10, 119);
                 s.printBonuses();
